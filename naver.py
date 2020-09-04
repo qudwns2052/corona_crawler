@@ -5,12 +5,16 @@ import os
 import sys
 import re
 
+
+# args 받는 방법 변경 -> flag 사용하는 것으로 
 keyword = sys.argv[1] # 코로나
 start_date = sys.argv[2] # 20200101
 end_date = sys.argv[3] # 20200131
 
+options = webdriver.ChromeOptions()
+options.add_argument('headless')
 
-driver = webdriver.Chrome() 
+driver = webdriver.Chrome('./chromedriver', chrome_options=options) 
 
 url = "https://search.naver.com/search.naver?where=news&query={0}&sort=2&nso=so:da,"\
             "p:from{1}to{2},a:all&field=1".format(keyword, start_date, end_date)
@@ -40,7 +44,7 @@ while True :
     else :
         temp = infos[-1].find("dl").find("dd").text
         # try :
-        pattern = '\d+.\d+.\d+.' 
+        pattern = r'\d+.\d+.\d+.' 
         r = re.compile(pattern)
         temp_date = r.search(temp).group(0).replace(".","")
         
@@ -80,11 +84,11 @@ for info in infos :
     temp = info.find("dl").find("dd").text
 
     try :
-        pattern = '\d+.\d+.\d+.' 
+        pattern = r'\d+.\d+.\d+.' 
         r = re.compile(pattern)
         date = r.search(temp).group(0) 
     except AttributeError:
-        pattern = '\w* (\d\w*)' 
+        pattern = r'\w* (\d\w*)' 
         r = re.compile(pattern)
         date = r.search(temp).group(1)
         
