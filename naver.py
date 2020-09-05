@@ -4,10 +4,20 @@ import csv
 import os
 import sys
 import re
+import argparse
 
-keyword = sys.argv[1] # 코로나
-start_date = sys.argv[2] # 20200101
-end_date = sys.argv[3] # 20200131
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--keyword', required=True, help = "검색할 키워드")
+parser.add_argument('--start', required=True, help = "시작할 날짜")
+parser.add_argument('--end', required=True, help = "끝나는 날짜")
+
+args = parser.parse_args()
+
+
+keyword = args.keyword
+start_date = args.start
+end_date = args.end
 
 
 driver = webdriver.Chrome() 
